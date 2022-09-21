@@ -8,6 +8,4 @@ services:
     ports:
       - '5432:5432'
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres2021
-      - POSTGRES_DB=doggotime
+      - DATABASE_URL=postgres://postgres:postgres2021@localhost:5432/doggotime

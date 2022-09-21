@@ -4,10 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && npm run migrate && npm run schema",
     "start": "next start",
     "lint": "next lint",
-    "mikro-orm": "npx mikro-orm"
+    "mikro-orm": "npx mikro-orm",
+    "migrate": "npx mikro-orm migration:up",
+    "schema": "npx mikro-orm schema:update -r"
   },
   "mikro-orm": {
     "useTsNode": true,
@@ -17,30 +19,37 @@
     ]
   },
   "dependencies": {
-    "@mikro-orm/cli": "5.1.3",
-    "@mikro-orm/core": "5.1.3",
-    "@mikro-orm/migrations": "5.1.3",
-    "@mikro-orm/postgresql": "5.1.3",
-    "@mikro-orm/seeder": "5.1.3",
+    "@mikro-orm/cli": "5.2.0",
+    "@mikro-orm/core": "5.2.0",
+    "@mikro-orm/migrations": "5.2.0",
+    "@mikro-orm/postgresql": "5.2.0",
+    "@mikro-orm/seeder": "5.2.0",
     "@next-auth/mikro-orm-adapter": "^2.0.1",
-    "@types/uuid": "^8.3.4",
     "axios": "^0.27.2",
-    "mikro-orm": "^5.1.2",
+    "dotenv": "^16.0.1",
+    "finnish-holidays-js": "^1.1.2",
+    "mikro-orm": "5.2.0",
     "next": "12.1.6",
     "next-auth": "^4.3.4",
     "react": "18.1.0",
+    "react-cookie": "^4.1.1",
     "react-dom": "18.1.0",
+    "react-icons": "^4.4.0",
     "reflect-metadata": "^0.1.13",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@mikro-orm/entity-generator": "^5.1.3",
+    "@mikro-orm/entity-generator": "5.2.0",
     "@types/node": "17.0.33",
     "@types/react": "18.0.9",
     "@types/react-dom": "18.0.4",
+    "@types/uuid": "^8.3.4",
+    "autoprefixer": "^10.4.7",
     "eslint": "8.15.0",
     "eslint-config-next": "12.1.6",
     "eslint-config-prettier": "^8.5.0",
+    "postcss": "^8.4.14",
+    "tailwindcss": "^3.1.4",
     "ts-node": "^10.7.0",
     "typescript": "4.6.4"
   }

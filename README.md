@@ -1,3 +1,3 @@
-# Harvest Flex Hours - Start State
+# Harvest Flex Time - End State
 
-The state the project was in when it was given to me.
+The final state of the project.

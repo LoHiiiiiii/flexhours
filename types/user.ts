@@ -1,5 +1,5 @@
 export interface UserProfile {
-  harvestId: number
-  firstName: string
-  lastName: string
+  harvestId: number;
+  firstName: string;
+  lastName: string;
 }

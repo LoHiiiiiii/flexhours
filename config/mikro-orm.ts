@@ -3,23 +3,20 @@ import 'dotenv/config'
 import { Account, User } from '../db/entities/User'
 import { PartTimePeriod } from '../db/entities/PartTimePeriod'
 import { defaultEntities } from '@next-auth/mikro-orm-adapter'
+import { Task } from '../db/entities/Task'
 
 const config: Options = {
   type: 'postgresql',
-  dbName: process.env.POSTGRES_DB,
-  host: process.env.POSTGRES_URL,
-  port: Number(process.env.POSTGRES_PORT),
-  user: process.env.POSTGRES_USER,
-  password: process.env.POSTGRES_PASSWORD,
-  entities: [User, PartTimePeriod, Account, defaultEntities.Session],
+  clientUrl: process.env.DATABASE_URL,
+  entities: [User, PartTimePeriod, Account, Task, defaultEntities.Session],
   debug: process.env.DEBUG === 'true' || process.env.DEBUG?.includes('db'),
   migrations: {
     tableName: 'mikro_orm_migrations',
     path: 'db/migrations',
     glob: '!(*.d).{js,ts}',
-    disableForeignKeys: true,
+    disableForeignKeys: false,
     allOrNothing: true,
-    dropTables: true,
+    dropTables: false,
     safe: false,
     snapshot: true,
     emit: 'ts',
@@ -31,6 +28,13 @@ const config: Options = {
     emit: 'ts',
     fileName: (className: string) => className,
   },
+  driverOptions: {
+    connection: { ssl: { rejectUnauthorized: false } },
+  },
+  schemaGenerator: {
+		disableForeignKeys: false,
+		createForeignKeyConstraints: true,
+	},
 }
 
 export default config
