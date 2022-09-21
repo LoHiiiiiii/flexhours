@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  db:
+    image: 'postgres:14-alpine'
+    container_name: doggotime-db
+    restart: on-failure
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres2021
+      - POSTGRES_DB=doggotime
