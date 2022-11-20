@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && npm run migrate && npm run schema",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "mikro-orm": "npx mikro-orm",
