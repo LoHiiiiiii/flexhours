@@ -22,7 +22,7 @@ export function NameBar({ name, total, month, remaining }: NameBarProps) {
         <BalanceBar total={total} month={month} remaining={remaining}>
           <Name className="tablet:hidden" name={name} />
         </BalanceBar>
-        <BaseButton onClick={() => router.replace("/logout")}>
+        <BaseButton>
           Logout
         </BaseButton>
       </div>

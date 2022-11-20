@@ -1,7 +1,6 @@
-import BaseBar from "components/BaseBar";
 import BaseButton from "components/BaseButton";
 import Head from "next/head";
-import Link from "next/link";
+import { useRouter } from "next/router";
 import { ChangeEventHandler } from "react";
 
 export default function Page({
@@ -12,6 +11,7 @@ export default function Page({
   const handleChange:ChangeEventHandler<HTMLTextAreaElement> = (event) => { 
     setWorkdaysString(event.target.value);
   };
+  const router = useRouter();
 
   return (
     <>
@@ -23,8 +23,8 @@ export default function Page({
           <h1 className="uppercase laptop:text-4xl text-[1.7rem]">
             Doggotime - Dummy Data View
           </h1>
-          <BaseButton onClick={()=>{}}>
-            <Link href="calendar"> Go to Calendar </Link>
+          <BaseButton onClick={() => router.replace("/calendar")}>
+            Go to Calendar
           </BaseButton>
         </div>
         <textarea className="rounded-lg p-2 bg-wdBar min-h-[600px]" style={{resize: "none"}} value={workdaysString} onChange={handleChange} draggable={false}/>
