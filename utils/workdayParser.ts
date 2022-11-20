@@ -41,7 +41,7 @@ export function parseWorkdays(text: string): ParsedWorkdays {
     
     const firstDay = (rows.length > 1) ? stringToYMD(rows[1].split(splitString)[0]): undefined;
 
-    const rawWorkdays: RawWorkday[] = rows.slice(1, -1).map((string) => {
+    const rawWorkdays: RawWorkday[] = rows.slice(1, rows.length).map((string) => {
         const split = string.split(splitString);
         const raw: RawWorkday =  {
             date: split[0] ?? undefined,
