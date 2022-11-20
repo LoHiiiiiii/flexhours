@@ -32,13 +32,14 @@ export function parseWorkdays(text: string): ParsedWorkdays {
 
     const firstRow = rows[0].split(splitString);
     const name = firstRow[0];
-    const currentDay = (firstRow.length > 1) ? firstRow[1] : undefined;
+    const currentDay = (firstRow.length > 1) ? stringToYMD(firstRow[1]) : undefined;
     let dailyHours = 7.5;
     if (firstRow.length > 2) {
         const parsed = parseFloat(firstRow[2]);
         if (!isNaN(parsed)) dailyHours = parsed;
     }
-    const firstDay = (rows.length > 1) ? rows[1].split(splitString)[0]: undefined;
+    
+    const firstDay = (rows.length > 1) ? stringToYMD(rows[1].split(splitString)[0]): undefined;
 
     const rawWorkdays: RawWorkday[] = rows.slice(1, -1).map((string) => {
         const split = string.split(splitString);
@@ -60,7 +61,6 @@ export function parseWorkdays(text: string): ParsedWorkdays {
         return addRawToRecord(workdays, raw);
     }, {});
 
-
     return {
         name,
         firstDay: firstDay ?? today,
@@ -70,44 +70,55 @@ export function parseWorkdays(text: string): ParsedWorkdays {
     };
 };
 
-const addRawToRecord = (workdays: Record<string, Workday>, raw: RawWorkday) => {
+function addRawToRecord(workdays: Record<string, Workday>, raw: RawWorkday) {
     if (!raw.date || !raw.hoursWorked ||!raw.targetHours) return workdays;
-        const workday: Workday = {
-            date: raw.date,
-            hoursWorked: 0,
-            targetHours: 0,
-            overtimeHours: 0,
-            timerRunning: raw.special === "timing"
-        };
+    const date = new Date(raw.date);
+    if (isNaN(date.getTime())) return workdays;
+    const ymd = dateToYMD(date);
+    const workday: Workday = {
+        date: ymd,
+        hoursWorked: 0,
+        targetHours: 0,
+        overtimeHours: 0,
+        timerRunning: raw.special === "timing"
+    };
 
-        if (raw.special != "ignore" && raw.special != "overtime") {
-            const parsed = parseFloat(raw.hoursWorked);
-            workday.hoursWorked = (isNaN(parsed)) ? workday.hoursWorked : parsed;
-        } else if (raw.special === "overtime") {
-            const parsed = parseFloat(raw.hoursWorked);
-            workday.overtimeHours = (isNaN(parsed)) ? workday.overtimeHours : parsed;
-        }
+    if (raw.special != "ignore" && raw.special != "overtime" && raw.special != "dayoff") {
+        const parsed = parseFloat(raw.hoursWorked);
+        workday.hoursWorked = (isNaN(parsed)) ? workday.hoursWorked : parsed;
+    } else if (raw.special === "overtime") {
+        const parsed = parseFloat(raw.hoursWorked);
+        workday.overtimeHours = (isNaN(parsed)) ? workday.overtimeHours : parsed;
+    }
 
+    if (raw.special != "dayoff") {
         const parsed = parseFloat(raw.targetHours);
         workday.targetHours = (isNaN(parsed)) ? workday.targetHours : parsed;
+    }
 
-        if (raw.special && raw.special != "timing"){
-            workday.specialDay = {
-                type: raw.special,
-                description: raw.description
-            }
+    if (raw.special && raw.special != "timing"){
+        workday.specialDay = {
+            type: raw.special,
+            description: raw.description
         }
+    }
 
-        if (workdays[raw.date]){
-            workdays[raw.date].hoursWorked += workday.hoursWorked;
-            workdays[raw.date].targetHours += Math.max(workday.targetHours, workdays[raw.date].targetHours);
-            workdays[raw.date].overtimeHours += workday.hoursWorked;
-            workdays[workday.date].timerRunning = workdays[workday.date].timerRunning || workday.timerRunning;
-            if (!workdays[raw.date].specialDay && workday.specialDay) workdays[raw.date].specialDay = workday.specialDay;
-        } else {
-            workdays[raw.date] = workday;
-        }
+    if (workdays[ymd]){
+        workdays[ymd].hoursWorked += workday.hoursWorked;
+        workdays[ymd].targetHours = Math.max(workday.targetHours, workdays[ymd].targetHours);
+        workdays[ymd].overtimeHours += workday.overtimeHours;
+        workdays[workday.date].timerRunning = workdays[workday.date].timerRunning || workday.timerRunning;
+        if (!workdays[ymd].specialDay && workday.specialDay) workdays[ymd].specialDay = workday.specialDay;
+    } else {
+        workdays[ymd] = workday;
+    }
 
+    return workdays;
+};
 
-        return workdays;
+function stringToYMD(string: string | undefined) {
+    if (!string) return undefined;
+    const date = new Date(string);
+    if (isNaN(date.getTime())) return undefined;
+    return dateToYMD(date);
 }

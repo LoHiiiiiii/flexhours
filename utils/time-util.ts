@@ -2,11 +2,21 @@ import { SpecialDay } from "types/balance";
 import holidays from "finnish-holidays-js";
 import { dateToYMD } from "./format-util";
 
+function isEarlierOrEqualDate(a: Date, b: Date) {
+  return (a.getFullYear() < b.getFullYear() 
+  || (a.getFullYear() === b.getFullYear()
+      && (a.getMonth() < b.getMonth() 
+          || (a.getMonth() === b.getMonth() && a.getDate() <= b.getDate())
+         )
+      )
+  )
+}
+
 export function getSpanFromDates(startDate: Date, endDate: Date): Date[] {
   const dates: Date[] = [];
 
   let currentDate: Date = startDate;
-  while (currentDate.getTime() <= endDate.getTime()) {
+  while (isEarlierOrEqualDate(currentDate, endDate)) {
     dates.push(currentDate);
     currentDate = new Date(currentDate);
     currentDate.setDate(currentDate.getDate() + 1);
@@ -26,7 +36,7 @@ export function getFirstOfMonthsFromDates(startDate: Date, endDate: Date): Date[
   const dates: Date[] = [];
 
   let currentDate: Date = new Date(startDate.getFullYear(), startDate.getMonth());
-  while (currentDate.getTime() <= endDate.getTime()) {
+  while (isEarlierOrEqualDate(currentDate, endDate)) {
     dates.push(currentDate);
     currentDate = new Date(currentDate);
     currentDate.setMonth(currentDate.getMonth() + 1);
