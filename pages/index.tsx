@@ -1,14 +1,10 @@
 import { NameBar } from "components/NameBar";
 import { TopBar } from "components/TopBar";
 import { WorkdataView } from "components/WorkdataView";
-import { GetServerSideProps } from "next";
-import { getSession } from "next-auth/react";
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useCookies } from "react-cookie";
 import { BalanceChange, BalanceData, Workday } from "types/balance";
-import getBalanceData from "utils/balance-handler";
-import { getAccessToken } from "utils/database-handler";
 import { dateToYMD, getMonthYear } from "utils/format-util";
 import {
   getMonthFromFirstDate,
@@ -17,14 +13,25 @@ import {
   getLaterWeekdates,
 } from "utils/time-util";
 import { getBalanceChanges, parseBalance } from "utils/workday-handler";
+import { parseWorkdays } from "utils/workdayParser";
 
 export default function Page({
-  name,
-  balanceData,
-}: {
-  name: string;
-  balanceData: BalanceData;
-}) {
+  workdaysString,
+  setWorkdaysString,
+}:{workdaysString:string, setWorkdaysString:any}) {
+  const parsedWorkdays = parseWorkdays(workdaysString);
+  
+  const name = parsedWorkdays.name;
+
+  const balanceData: BalanceData = {
+    today: parsedWorkdays.currentDay,
+    firstWorkday: parsedWorkdays.firstDay,
+    workdays: parsedWorkdays.workdays,
+    baseBalance: 0,
+    lastMarkedDay: parsedWorkdays.currentDay,
+    defaultDailyHours: parsedWorkdays.dailyHours,
+  }
+
   const today = new Date(balanceData.today);
 
   const [cookies, setCookies] = useCookies(["currentMonth"]);
@@ -46,11 +53,7 @@ export default function Page({
   );
   const [balanceHandled, setBalanceHandled] = useState(false);
 
-  useEffect(() => {
-    if (!balanceData) {
-      return;
-    }
-
+  if (!balanceHandled) {
     const parsedData = parseBalance(balanceData);
 
     setDataWorkdays(parsedData.dataWorkdays);
@@ -58,9 +61,7 @@ export default function Page({
     setMonthBalances(parsedData.monthBalances);
     setTotalBalance(parsedData.totalBalance + balanceData.baseBalance);
     setBalanceHandled(true);
-  }, [name, balanceData]);
-
-  if (!balanceHandled) return null;
+  }
 
   const monthDates = getMonthFromFirstDate(firstOfMonth);
   const tempOtherWorkdays = { ...otherWorkdays };
@@ -193,38 +194,4 @@ export default function Page({
       </div>
     </>
   );
-}
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession(context);
-
-  if (!session?.user) {
-    return {
-      redirect: {
-        destination: "/api/auth/signin",
-        permanent: false,
-      },
-    };
-  }
-
-  const harvestId = `${session.harvestId}`;
-
-  const accessToken = await getAccessToken(harvestId);
-  if (!accessToken) {
-    return {
-      redirect: {
-        destination: "/api/auth/signin",
-        permanent: false,
-      },
-    };
-  }
-
-  const balanceData = await getBalanceData(harvestId, accessToken);
-
-  return {
-    props: {
-      name: session.user.name,
-      balanceData,
-    },
-  };
 };
