@@ -1,5 +1,5 @@
-import Image from "next/image";
-import harvestLogo from "./img/harvest.png";
+import BaseButton from "components/BaseButton";
+import Link from "next/link";
 
 export function TopBar() {
   return (
@@ -7,17 +7,9 @@ export function TopBar() {
       <h1 className="uppercase laptop:text-4xl text-[1.7rem]">
         Doggotime - Flex Hours
       </h1>
-      <a
-        className="text-lg flex align-middle items-center hover:bg-wdSecondary hover:tablet:bg-opacity-0 tablet:bg-opacity-0 bg-wdPrimary tablet:p-0 p-3 rounded-lg"
-        href="https://wunderdog.harvestapp.com"
-      >
-        <span className="tablet:inline hidden"> Data synced from </span>
-        <div className="tablet:px-1 px-0">
-          <div className="relative w-5.5 h-5.5">
-            <Image layout="fill" alt="harvest logo" src={harvestLogo} />
-          </div>
-        </div>
-      </a>
+      <BaseButton onClick={()=>{}}>
+        <Link href="/"> Go to Dummy Data View </Link>
+      </BaseButton>
     </div>
   );
 }
