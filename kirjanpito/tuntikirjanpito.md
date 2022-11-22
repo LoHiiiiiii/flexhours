@@ -1,5 +1,5 @@
 # Työaikakirjanpito
-Koska projektin ei alunperin ollut tarkoitus olla harjoitustyö, en tehnyt tuntikirjanpitoa projektin aikana. Alla olevat on rakennettu [alkuperäisen repositorion historiasta](history.png) sekä Harvest -tuntikirjanpito-ohjelmaan merkatuista työtunneista. Alla oleva tuntisumma on kohtuu pessimistisesti laskettu, sillä Harvestista saadut työtunnit summaamalla tulos on 265.5h. Ohessa myös [graafi](contributions.png) minun commiteista.
+Koska projektin ei alunperin ollut tarkoitus olla harjoitustyö, en tehnyt tuntikirjanpitoa projektin aikana. Alla olevat on rakennettu [alkuperäisen repositorion historiasta](commits.png) sekä Harvest -tuntikirjanpito-ohjelmaan merkatuista työtunneista. Alla oleva tuntisumma on kohtuu pessimistisesti laskettu, sillä Harvestista saadut työtunnit summaamalla tulos on 265.5h. Ohessa myös [graafi](contributions.png) minun commiteista.
 
 | päivä | aika | kuvaus |
 |:----:|:-----:| :-----|
