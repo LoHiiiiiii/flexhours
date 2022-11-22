@@ -1,6 +1,7 @@
 # Doggotime - Fleksituntien seuraamisjärjestelmä
 
-[Heroku](https://fs-project-flextime.herokuapp.com/calendar) - suljetaan 28.11. kun herokun ilmainen tier päättyy-
+[Heroku](https://fs-project-flextime.herokuapp.com/calendar) - suljetaan 28.11. kun herokun ilmainen tier päättyy
+
 [Tuntikirjanpito](kirjanpito)
 
 Wunderdogilla on käytössä liukuvat työajat. Doggotime on työkalu, jolla Harvestista saatuja tuntimerkintöjä verrataan siihen, kuinka paljon töitä tulisi olla tehty. Poikkeamista työntekijä voi päätellä, kuinka paljon fleksivapaata tai fleksiylitöitä hänen pitää tehdä. Kalenterista myös näkee pyhät, sekä erikoispäiville syyt poissaoloille.
