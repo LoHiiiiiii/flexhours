@@ -1,6 +1,6 @@
 # Doggotime - Fleksituntien seuraamisjärjestelmä
 
-[Heroku](https://fs-project-flextime.herokuapp.com/calendar) - suljetaan 28.11. kun herokun ilmainen tier päättyy
+[Heroku](https://fs-project-flextime.herokuapp.com) - suljetaan 28.11. kun herokun ilmainen tier päättyy
 
 [Tuntikirjanpito](kirjanpito/tuntikirjanpito.md)
 
